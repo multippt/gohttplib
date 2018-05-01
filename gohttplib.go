@@ -39,6 +39,7 @@ import (
 	"net/http"
 	"unsafe"
 	"github.com/valyala/fasthttp"
+	"github.com/valyala/fasthttp/reuseport"
 	"sync"
 	"fmt"
 	"log"
@@ -81,7 +82,12 @@ func handlerFastHttp(ctx *fasthttp.RequestCtx) {
 
 func listenAndServeFastHttp(caddr *C.char) {
 	addr := C.GoString(caddr)
-	fasthttp.ListenAndServe(addr, handlerFastHttp)
+	listener, err := reuseport.Listen("tcp4", addr)
+	if err != nil {
+		fmt.Print("Failed to initialize socket")
+		return
+	}
+	fasthttp.Serve(listener, handlerFastHttp)
 }
 
 func handleFuncHttp(cpattern *C.char, cfn *C.FuncPtr) {
