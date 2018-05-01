@@ -5,6 +5,7 @@ import "C"
 import (
 	"net/http"
 	"unsafe"
+	"bytes"
 )
 
 //export ResponseWriter_Write
@@ -16,7 +17,8 @@ func ResponseWriter_Write(wPtr C.uint, cbuf *C.char, length C.int) C.int {
 		return C.EOF
 	}
 
-	n, err := (*(*http.ResponseWriter)(w)).Write(buf)
+	//n, err := (*(*http.ResponseWriter)(w)).Write(buf)
+	n, err := (*(*bytes.Buffer)(w)).Write(buf)
 	if err != nil {
 		return C.EOF
 	}

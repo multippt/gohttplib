@@ -14,11 +14,26 @@ typedef struct Request_
     const char *Headers;
 } Request;
 
+typedef struct RequestFastHttp_
+{
+    void *Method;
+    int MethodLen;
+    void *Host;
+    int HostLen;
+	void *URL;
+	int URLLen;
+	void *Body;
+	int BodyLen
+    void *Headers;
+    int HeadersLen;
+} RequestFastHttp;
+
 typedef unsigned int ResponseWriterPtr;
 
 typedef void FuncPtr(ResponseWriterPtr w, Request *r);
 
 void Call_HandleFunc(ResponseWriterPtr w, Request *r, FuncPtr *fn);
+extern void Call_HandleFuncFastHttp(ResponseWriterPtr w, RequestFastHttp *r, FuncPtr *fn);
 
 void ListenAndServe(char* p0);
 

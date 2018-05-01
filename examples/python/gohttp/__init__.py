@@ -12,8 +12,9 @@ class ResponseWriter:
         self._w = w
 
     def write(self, body):
-        n = lib.ResponseWriter_Write(self._w, body, len(body))
-        if n != len(body):
+        b_len = len(body)
+        n = lib.ResponseWriter_Write(self._w, body, b_len)
+        if n != b_len:
             raise IOError("Failed to write to ResponseWriter.")
 
     def set_status(self, code):
